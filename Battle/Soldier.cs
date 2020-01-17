@@ -4,6 +4,7 @@ namespace Battle
 {
     public class Soldier
     {
+        public Weapon Weapon { get; private set; } = Weapon.BareFist;
         public Soldier(string name)
         {
             ValidateNameisNotBlank(name);
@@ -22,5 +23,9 @@ namespace Battle
         
         public string Name { get; }
         //test
+        public void SetWeapon(Weapon weapon)
+        {
+            Weapon = weapon;
+        }
     }
 }

@@ -25,5 +25,25 @@ namespace Battle.Tests
              
             act.Should().Throw<ArgumentException>();
         }
+
+        [Fact]
+        public void Construction_ASoldierMustHaveBareFistWeaponsByDefault()
+        {
+            var soldier = new Soldier("name");
+            soldier.Weapon.Should().Be(Weapon.BareFist);
+        }
+
+        [Fact]
+        public void SetWeapon_GivenAnAxe_WeaponIsSet()
+        {
+            // GIVEN
+            var soldier = new Soldier("Ann");
+
+            // WHEN
+            soldier.SetWeapon(Weapon.Axe);
+
+            // THEN
+            soldier.Weapon.Should().Be(Weapon.Axe);
+        }
     }
 }
