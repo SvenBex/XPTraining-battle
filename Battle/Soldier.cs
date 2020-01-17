@@ -21,5 +21,6 @@ namespace Battle
         private bool IsBlank(string name) => string.IsNullOrEmpty(name?.Trim());
         
         public string Name { get; }
+        //test
     }
 }
