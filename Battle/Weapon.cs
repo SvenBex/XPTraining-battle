@@ -4,12 +4,28 @@ using System.Text;
 
 namespace Battle
 {
-    public enum Weapon
+    public interface IWeapon
     {
-        Unknown = 0,
-        BareFist,
-        Axe,
-        Sword,
-        Spear
+        int Damage { get; }
+    }
+
+    public class BareFist : IWeapon
+    {
+        public int Damage => 1;
+    }
+
+    public class Spear : IWeapon
+    {
+        public int Damage => 2;
+    }
+
+    public class Sword : IWeapon
+    {
+        public int Damage => 2;
+    }
+
+    public class Axe : IWeapon
+    {
+        public int Damage => 3;
     }
 }

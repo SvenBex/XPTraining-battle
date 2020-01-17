@@ -30,20 +30,82 @@ namespace Battle.Tests
         public void Construction_ASoldierMustHaveBareFistWeaponsByDefault()
         {
             var soldier = new Soldier("name");
-            soldier.Weapon.Should().Be(Weapon.BareFist);
+            soldier.Weapon.Should().BeEquivalentTo(new BareFist());
         }
 
         [Fact]
-        public void SetWeapon_GivenAnAxe_WeaponIsSet()
+        public void EquipWeapon_GivenAnAxe_WeaponIsSet()
         {
             // GIVEN
             var soldier = new Soldier("Ann");
+            var weapon = new Axe();
 
             // WHEN
-            soldier.SetWeapon(Weapon.Axe);
+            soldier.EquipWeapon(weapon);
 
             // THEN
-            soldier.Weapon.Should().Be(Weapon.Axe);
+            soldier.Weapon.Should().Be(weapon);
+        }
+
+        [Fact]
+        public void Attack_SoldierCannotAttackHimself_ThrowsException()
+        {
+            // GIVEN
+            var soldier1 = new Soldier("1");
+
+            // WHEN
+            Assert.Throws<Exception>(() => soldier1.Attack(soldier1));
+        }
+
+        [Fact]
+        public void Attack_Given_DefenderHasBetterWeapon_DefenderWins()
+        {
+            // GIVEN
+            var attacker = new Soldier("Attacker");
+            attacker.EquipWeapon(new BareFist());
+
+            var defender = new Soldier("Defender");
+            defender.EquipWeapon(new Axe());
+
+            // WHEN
+            var winnerName = attacker.Attack(defender);
+
+            // THEN
+            winnerName.Should().Be(defender.Name);
+        }
+
+        [Fact]
+        public void Attack_IfSameWeaponDamage_AttackerWins()
+        {
+            // GIVEN
+            var attacker = new Soldier("Attacker");
+            attacker.EquipWeapon(new BareFist());
+
+            var defender = new Soldier("Defender");
+            defender.EquipWeapon(new BareFist());
+
+            // WHEN
+            var winnerName = attacker.Attack(defender);
+
+            // THEN
+            winnerName.Should().Be(attacker.Name);
+        }
+
+        [Fact]
+        public void Attack_AttackerHasBetterWeapon_AttackerWins()
+        {
+            // GIVEN
+            var attacker = new Soldier("Attacker");
+            attacker.EquipWeapon(new Axe());
+
+            var defender = new Soldier("Defender");
+            defender.EquipWeapon(new BareFist());
+
+            // WHEN
+            var winnerName = attacker.Attack(defender);
+
+            // THEN
+            winnerName.Should().Be(attacker.Name);
         }
     }
 }
