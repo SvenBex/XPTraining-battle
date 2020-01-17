@@ -48,6 +48,19 @@ namespace Battle.Tests
         }
 
         [Fact]
+        public void EquipWeapon_GivenNull_WeaponIsBareFist()
+        {
+            // GIVEN
+            var soldier = new Soldier("Ann");
+
+            // WHEN
+            soldier.EquipWeapon(null);
+
+            // THEN
+            soldier.Weapon.Should().BeEquivalentTo(new BareFist());
+        }
+
+        [Fact]
         public void Attack_SoldierCannotAttackHimself_ThrowsException()
         {
             // GIVEN
@@ -71,7 +84,7 @@ namespace Battle.Tests
             var winnerName = attacker.Attack(defender);
 
             // THEN
-            winnerName.Should().Be(defender.Name);
+            winnerName.Should().Be(defender);
         }
 
         [Fact]
@@ -88,7 +101,7 @@ namespace Battle.Tests
             var winnerName = attacker.Attack(defender);
 
             // THEN
-            winnerName.Should().Be(attacker.Name);
+            winnerName.Should().Be(attacker);
         }
 
         [Fact]
@@ -105,7 +118,20 @@ namespace Battle.Tests
             var winnerName = attacker.Attack(defender);
 
             // THEN
-            winnerName.Should().Be(attacker.Name);
+            winnerName.Should().Be(attacker);
+        }
+
+        [Fact]
+        public void SetId_GivenSoldierWithAnId_ThrowsException()
+        {
+            // GIVEN
+            var soldier = new Soldier("Ernie");
+            var originalId = 1;
+            soldier.SetId(originalId);
+            
+            // WHEN THEN
+            Assert.Throws<Exception>(() => soldier.SetId(2));
+            soldier.Id.Should().Be(originalId);
         }
     }
 }

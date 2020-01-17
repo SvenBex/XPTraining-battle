@@ -4,13 +4,22 @@ namespace Battle
 {
     public class Soldier
     {
-        public IWeapon Weapon { get; private set; } = new BareFist();
+        private readonly IWeapon _defaultWeapon = new BareFist();
+        public IWeapon Weapon { get; private set; }
         public string Name { get; }
+        private int? _id { get; set; }
+        internal int Id => _id.GetValueOrDefault(-1);
 
         public Soldier(string name)
         {
             ValidateNameisNotBlank(name);
             Name = name;
+            Weapon = _defaultWeapon;
+        }
+
+        public Soldier(string name, IWeapon weapon) : this(name)
+        {
+            EquipWeapon(weapon);
         }
 
         private void ValidateNameisNotBlank(string name)
@@ -25,6 +34,11 @@ namespace Battle
         
         public void EquipWeapon(IWeapon weapon)
         {
+            if (weapon == null)
+            {
+                Weapon = _defaultWeapon;
+                return;
+            }
             Weapon = weapon;
         }
 
@@ -33,7 +47,7 @@ namespace Battle
             return Weapon.Damage;
         }
 
-        internal string Attack(Soldier defendingSoldier)
+        internal Soldier Attack(Soldier defendingSoldier)
         {
             if (this == defendingSoldier)
             {
@@ -41,8 +55,18 @@ namespace Battle
             }
 
             return GetWeaponDamage() >= defendingSoldier.GetWeaponDamage()
-                ? Name
-                : defendingSoldier.Name;
+                ? this
+                : defendingSoldier;
+        }
+
+        public void SetId(int id)
+        {
+            if (_id.HasValue)
+            {
+                throw new Exception("Soldier already has an id.");
+            }
+
+            _id = id;
         }
     }
 }
